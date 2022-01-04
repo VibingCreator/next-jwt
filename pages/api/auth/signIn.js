@@ -1,6 +1,7 @@
 import { compare } from "../../../lib/crypto";
 import prisma from "../../../lib/prisma";
 import jwt from "jsonwebtoken";
+import cookie from "cookie";
 
 const handler = async (req, res) => {
     if (req.method !== "POST") {
@@ -31,7 +32,9 @@ const handler = async (req, res) => {
 
     const token = jwt.sign({ "id": user.id }, "secret");
 
-    return res.status(200).json({ token });
+    res.setHeader("Set-Cookie", cookie.serialize("token", token, { httpOnly: true, path: "/" }));
+
+    return res.status(200).json({ "message": "OK" });
 };
 
 export { handler as default };

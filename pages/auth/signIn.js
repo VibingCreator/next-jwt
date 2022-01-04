@@ -4,6 +4,15 @@ const SignIn = () => {
 
         const [username, password] = event.target.elements;
 
+        const res = await fetch("/api/auth/signIn", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: username.value,
+                password: password.value
+            })
+        });
+
         event.target.reset();
     };
 
