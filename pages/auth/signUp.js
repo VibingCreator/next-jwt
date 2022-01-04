@@ -1,10 +1,26 @@
+import { useRouter } from "next/router";
+
 const SignUp = () => {
-    const onSubmitHandler = (event) => {
+    const router = useRouter();
+
+    const onSubmitHandler = async (event) => {
         event.preventDefault();
 
         const [username, email, password] = event.target.elements;
 
-        event.target.reset();
+        const res = await fetch("/api/auth/signUp", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                username: username.value,
+                email: email.value,
+                password: password.value
+            })
+        });
+
+        if (res.ok) {
+            await router.push("/");
+        }
     };
 
     return (
